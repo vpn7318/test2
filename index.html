@@ -303,63 +303,64 @@
             buttonsEl.innerHTML = '';
 
             q.options.forEach(option => {
-                const button = document.createElement('button');
-                button.className = 'button';
-                button.textContent = option;
-                button.style.left = Math.random() * 90 + '%';
-                button.style.top = Math.random() * 90 + '%';
-                button.dataset.runAwayCount = 0;
+    const button = document.createElement('button');
+    button.className = 'button';
+    button.textContent = option;
+    button.style.left = Math.random() * 90 + '%';
+    button.style.top = Math.random() * 90 + '%';
+    button.dataset.runAwayCount = 0;
 
-                if (q.question === "Will you be my valentine?") {
-                    if (option === "No") {
-                        button.addEventListener('click', () => {
-                            button.style.display = 'none'; // Make invisible and non-workable
-                        });
-                    } else if (option === "Yes") {
-                        button.addEventListener('mouseenter', () => {
-                            if (parseInt(button.dataset.runAwayCount) < 3) {
-                                runAway(button);
-                            }
-                        });
-                        button.addEventListener('click', () => {
-                            if (parseInt(button.dataset.runAwayCount) < 3) {
-                                runAway(button);
-                            } else {
-                                if (option === q.correct) {
-                                    score++;
-                                }
-                                button.classList.add('float-away');
-                                setTimeout(() => {
-                                    currentQuestionIndex++;
-                                    loadQuestion();
-                                }, 1000);
-                            }
-                        });
-                    }
-                } else {
-                    button.addEventListener('mouseenter', () => {
-                        if (parseInt(button.dataset.runAwayCount) < 3) {
-                            runAway(button);
-                        }
-                    });
-                    button.addEventListener('click', () => {
-                        if (parseInt(button.dataset.runAwayCount) < 3) {
-                            runAway(button);
-                        } else {
-                            if (option === q.correct) {
-                                score++;
-                            }
-                            button.classList.add('float-away');
-                            setTimeout(() => {
-                                currentQuestionIndex++;
-                                loadQuestion();
-                            }, 1000);
-                        }
-                    });
-                }
-
-                buttonsEl.appendChild(button);
+    if (q.question === "Will you be my valentine?") {
+        if (option === "No") {
+            // Make "No" stationary: No movement, stays visible on click
+            button.addEventListener('click', () => {
+                // Do nothing (or add a message if desired, e.g., alert('Please choose Yes!'))
             });
+        } else if (option === "Yes") {
+            button.addEventListener('mouseenter', () => {
+                if (parseInt(button.dataset.runAwayCount) < 3) {
+                    runAway(button);
+                }
+            });
+            button.addEventListener('click', () => {
+                if (parseInt(button.dataset.runAwayCount) < 3) {
+                    runAway(button);
+                } else {
+                    if (option === q.correct) {
+                        score++;
+                    }
+                    button.classList.add('float-away');
+                    setTimeout(() => {
+                        currentQuestionIndex++;
+                        loadQuestion();
+                    }, 1000);
+                }
+            });
+        }
+    } else {
+        button.addEventListener('mouseenter', () => {
+            if (parseInt(button.dataset.runAwayCount) < 3) {
+                runAway(button);
+            }
+        });
+        button.addEventListener('click', () => {
+            if (parseInt(button.dataset.runAwayCount) < 3) {
+                runAway(button);
+            } else {
+                if (option === q.correct) {
+                    score++;
+                }
+                button.classList.add('float-away');
+                setTimeout(() => {
+                    currentQuestionIndex++;
+                    loadQuestion();
+                }, 1000);
+            }
+        });
+    }
+
+    buttonsEl.appendChild(button);
+});
 
             startRandomMovement();
         }
@@ -368,7 +369,7 @@
             button.dataset.runAwayCount = parseInt(button.dataset.runAwayCount) + 1;
             button.style.left = Math.random() * 90 + '%';
             button.style.top = Math.random() * 90 + '%';
-            button.style.transition = 'all 0.3s ease';
+            button.style.transition = 'all 0.1s ease';
         }
 
         function startRandomMovement() {
@@ -381,7 +382,7 @@
                         button.style.top = Math.random() * 90 + '%';
                     }
                 });
-            }, 1500);
+            }, 500);
         }
 
         loadQuestion();
