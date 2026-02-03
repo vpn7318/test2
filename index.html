@@ -248,15 +248,28 @@
         audio.loop = true;
         audio.volume = 0.3;
 
-        musicBtn.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                musicBtn.textContent = '🔊';
-            } else {
-                audio.pause();
-                musicBtn.textContent = '🔇';
-            }
+        // Autoplay music on page load
+window.addEventListener('load', () => {
+    audio.play().then(() => {
+        musicBtn.textContent = '🔊'; // Update button to show playing
+    }).catch(e => {
+        console.log('Autoplay blocked by browser:', e);
+        // Fallback: Music won't play until button is clicked
+    });
+});
+
+// Keep the button as a toggle for play/pause
+musicBtn.addEventListener('click', () => {
+    if (audio.paused) {
+        audio.play().catch(e => {
+            console.error('Play failed:', e);
         });
+        musicBtn.textContent = '🔊';
+    } else {
+        audio.pause();
+        musicBtn.textContent = '🔇';
+    }
+});
 
         function createHeart() {
             const heart = document.createElement('div');
